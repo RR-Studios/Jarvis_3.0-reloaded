@@ -9,3 +9,7 @@ For the installation of packages please go to the file named call "Installation 
 
 
 ## Development has been completed 
+
+
+## Before running the main.py file 
+  Go to the folder named "go through this folder before running the main.py file"
