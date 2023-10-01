@@ -1,0 +1,55 @@
+import bluetooth
+
+
+def discover_nearby_devices():
+    nearby_devices = bluetooth.discover_devices(duration=8, lookup_names=True, flush_cache=True, lookup_class=True)
+    return nearby_devices
+
+
+def connect_to_device(device_address):
+    try:
+        bluetoothSocket = bluetooth.BluetoothSocket(bluetooth.RFCOMM)
+        bluetoothSocket.connect((device_address, 1))
+        return bluetoothSocket
+    except Exception as e:
+        print("Failed to connect to the device:", str(e))
+        return None
+
+
+def disconnect_from_device(socket):
+    try:
+        socket.close()
+        print("Disconnected from the device.")
+    except Exception as e:
+        print("Failed to disconnect from the device:", str(e))
+
+
+if __name__ == "__main__":
+    while True:
+        print("1. Discover nearby Bluetooth devices")
+        print("2. Connect to a device")
+        print("3. Disconnect from a device")
+        print("4. Exit")
+
+        choice = input("Enter your choice: ")
+
+        if choice == "1":
+            nearby_devices = discover_nearby_devices()
+            print("Nearby devices:")
+            for device_address, device_name, _ in nearby_devices:
+                print(f"Address: {device_address}, Name: {device_name}")
+
+        elif choice == "2":
+            device_address = input("Enter the device address to connect: ")
+            socket = connect_to_device(device_address)
+            if socket:
+                print("Connected to the device.")
+
+        elif choice == "3":
+            if 'socket' in locals() and socket:
+                disconnect_from_device(socket)
+            else:
+                print("Not currently connected to any device.")
+
+        elif choice == "4":
+            break
